@@ -21,16 +21,22 @@ start:
   ;; Set up a background color.
   mov ah, 0Bh ;; Interrupt function code.
   mov bh, 00h ;; Interrupt function code.
-  mov bl, 01h ;; Function argument goes in bh.
+  mov bl, 01h ;; Function argument goes in bl.
   int 10h
+
+  ;; Set the cursor position.
+  mov dh, 12
+  mov dl, 30
+  call move_cursor
 
   mov si, text_string
   call print_string
-
+  
   jmp $
 
-  text_string db "Welcome to the Emmarating Opersystem (EmmaOS)!", 0
+  text_string db "Emmarating Opersystem", 0
 
+;; Prints a string whose pointer is in the si register to the screen.
 print_string:
   mov ah, 0Eh
   mov bl, 0Eh
@@ -42,6 +48,15 @@ print_string:
     jmp .repeat
   .done
     ret
+
+;; Move the text cursor to the given location on the screen.
+;; dh: The y coordinate (row)
+;; dl: The x coordinate (column)
+move_cursor:
+  mov ah, 02h
+  mov bh, 00h
+  int 10h
+  ret
 
 times 510-($-$$) db 0
 dw 0xAA55
