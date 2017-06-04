@@ -24,14 +24,41 @@ start:
   mov bl, 01h ;; Function argument goes in bl.
   int 10h
 
-  mov si, text_string
-  call print_line
-  mov si, text_string
-  call print_line
+  mov dh, 10
+  mov dl, 17
+  call move_cursor
+  mov si, banner_1
+  call print_string
+  mov dh, 11
+  mov dl, 17
+  call move_cursor
+  mov si, banner_2
+  call print_string
+  mov dh, 12
+  mov dl, 17
+  call move_cursor
+  mov si, banner_3
+  call print_string
+  mov dh, 13
+  mov dl, 17
+  call move_cursor
+  mov si, banner_4
+  call print_string
+  mov dh, 14
+  mov dl, 17
+  call move_cursor
+  mov si, banner_5
+  call print_string
   
   jmp $
 
   text_string db "Emmarating Opersystem", 0
+
+banner_1 db " _____                            ___  ____  ", 0
+banner_2 db "| ____|_ __ ___  _ __ ___   __ _ / _ \/ ___| ", 0
+banner_3 db "|  _| | '_ ` _ \| '_ ` _ \ / _` | | | \___ \ ", 0
+banner_4 db "| |___| | | | | | | | | | | (_| | |_| |___) |", 0
+banner_5 db "|_____|_| |_| |_|_| |_| |_|\__,_|\___/|____/ ", 0
 
 ;; Prints a string whose pointer is in the si register to the screen.
 print_string:
