@@ -24,13 +24,10 @@ start:
   mov bl, 01h ;; Function argument goes in bl.
   int 10h
 
-  ;; Set the cursor position.
-  mov dh, 12
-  mov dl, 30
-  call move_cursor
-
   mov si, text_string
-  call print_string
+  call print_line
+  mov si, text_string
+  call print_line
   
   jmp $
 
@@ -46,8 +43,25 @@ print_string:
     je .done
     int 10h
     jmp .repeat
-  .done
+  .done:
     ret
+
+;; Move to a new line and carraige return.
+increment_line:
+  mov ah, 03h
+  int 10h
+  add dh, 1
+  mov dl, 0
+  mov ah, 02h
+  mov bh, 00h
+  int 10h
+  ret
+
+;; Prints a string from si and moves to the next line.
+print_line:
+  call print_string
+  call increment_line
+
 
 ;; Move the text cursor to the given location on the screen.
 ;; dh: The y coordinate (row)
